@@ -189,7 +189,8 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
         foreach (var kvp in buckets[index])
         {
-            if (kvp.Key.Equals(item.Key) && kvp.Value.Equals(item.Value))
+            if (EqualityComparer<TKey>.Default.Equals(kvp.Key, item.Key) && 
+                EqualityComparer<TValue>.Default.Equals(kvp.Value, item.Value))
             {
                 return true;
             }
@@ -332,7 +333,7 @@ public class ChainingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
             foreach(var item in buckets[i])
             {
-                newList.Add((item.Key.ToString(), item.Value.ToString()));              
+                newList.Add((Convert.ToString(item.Key), Convert.ToString(item.Value)));              
             }
             yield return new BucketView(i, BucketState.Occupied, null, null, newList);
 
