@@ -29,6 +29,8 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
     private ProbingStrategy probingStrategy;
 
+    private EqualityComparer<TKey> keyComparer;
+
 
     public OpenAddressingHashTable(ProbingStrategy strategy = ProbingStrategy.Linear)
     {
@@ -39,6 +41,8 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
         count = 0;
 
         probingStrategy = strategy;
+
+        keyComparer = EqualityComparer<TKey>.Default;
     }
 
     public int GetHash(TKey key)
@@ -174,7 +178,7 @@ public class OpenAddressingHashTable<TKey, TValue> : IDictionary<TKey, TValue>
 
             if (occupied[hash] && !deleted[hash])
             {
-                if (EqualityComparer<TKey>.Default.Equals(table[hash].Key, key))
+                if (keyComparer.Equals(table[hash].Key, key))
                 {
                     return hash;
                 }
